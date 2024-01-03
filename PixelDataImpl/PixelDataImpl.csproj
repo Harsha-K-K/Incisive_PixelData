@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ADCB424F-C180-4502-BB90-E621291512E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PixelDataImpl</RootNamespace>
+    <AssemblyName>PixelDataImpl</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>PmsMip.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Philips.Platform.Adapters">
+      <HintPath>..\..\cp\AIP\Output\Bin\Philips.Platform.Adapters.dll</HintPath>
+    </Reference>
+    <Reference Include="Philips.Platform.ApplicationIntegration">
+      <HintPath>..\..\cp\AII\Output\Bin\Philips.Platform.ApplicationIntegration.dll</HintPath>
+    </Reference>
+    <Reference Include="Philips.Platform.CommonTypes">
+      <HintPath>..\..\cp\AII\Output\Bin\Philips.Platform.CommonTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="Philips.Platform.Dicom">
+      <HintPath>..\..\cp\DomainLibraries\Dicom\Output\Bin\Philips.Platform.Dicom.dll</HintPath>
+    </Reference>
+    <Reference Include="Philips.Platform.DicomDictionary">
+      <HintPath>..\..\cp\Common\Output\Bin\Philips.Platform.DicomDictionary.dll</HintPath>
+    </Reference>
+    <Reference Include="Philips.Platform.MemoryManager">
+      <HintPath>..\..\cp\AIP\Output\Bin\Philips.Platform.MemoryManager.dll</HintPath>
+    </Reference>
+    <Reference Include="Philips.Platform.StorageDevices">
+      <HintPath>..\..\cp\AIP\Output\Bin\Philips.Platform.StorageDevices.dll</HintPath>
+    </Reference>
+    <Reference Include="Philips.Platform.StorageDevices.Abstractions">
+      <HintPath>..\..\cp\AIP\Output\Bin\Philips.Platform.StorageDevices.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Philips.Platform.StorageDevices.Common">
+      <HintPath>..\..\cp\AIP\Output\Bin\Philips.Platform.StorageDevices.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Philips.Platform.StorageDevices.FastInMemory">
+      <HintPath>..\..\cp\AIP\Output\Bin\Philips.Platform.StorageDevices.FastInMemory.dll</HintPath>
+    </Reference>
+    <Reference Include="Philips.Platform.StorageDevices.Web">
+      <HintPath>..\..\cp\AIP\Output\Bin\Philips.Platform.StorageDevices.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PixelDataImplCopy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PmsMip.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
