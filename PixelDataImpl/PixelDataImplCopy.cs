@@ -122,68 +122,113 @@ namespace PixelDataImpl
         /// Initializes a new instance of PixelDataImplementation with given dcm file path
         /// </summary>
         /// <param name="fetchResult">the fetch result</param>
-        public PixelDataImplCopy(FetchResult fetchResult) : this(fetchResult, false)
-        {
-        }
+        //public PixelDataImplCopy(FetchResult fetchResult) : this(fetchResult, false)
+        //{
+        //}
+
+        ///// <summary>
+        ///// Initializes a new instance of PixelDataImplementation with given dcm file path
+        ///// </summary>
+        ///// <param name="fetchResult">the fetch result</param>
+        ///// <param name="isFullHeaderLoad"></param>
+        //public PixelDataImplCopy(FetchResult fetchResult, bool isFullHeaderLoad)
+        //{
+        //    FetchResult = fetchResult;
+        //    pixelDataType = fetchResult.PixelDataType;
+        //    imageDicomObject = FetchResult.DicomObjectHeader;
+
+        //    if (pixelDataType == PixelDataType.None)
+        //    {
+        //        LogHelper.LogInfo(
+        //            "Received non pixel data type" +
+        //            fetchResult.CompositePath.Anonymize());
+        //        return;
+        //    }
+        //    if (imageDicomObject != null)
+        //    {
+        //        isFastRepositoryEnabled = FastInMemoryUtility.IsFastRepositoryEnabled();
+        //        if (isFastRepositoryEnabled)
+        //        {
+        //            sopInstanceUid = imageDicomObject.GetString(DicomDictionary.DicomSopInstanceUid);
+        //            FastInMemoryPixelDataHandler = new FastInMemoryPixelDataHandler();
+        //            return;
+        //        }
+        //        pixelDataReference =
+        //            imageDicomObject.GetBulkDataReference(
+        //                StorageDevicesUtilities.GetPixelDataTag(
+        //                    imageDicomObject.GetTagVR(DicomDictionary.DicomPixelData)));
+        //    }
+        //    else
+        //    {
+        //        if (ConfigurationProvider.Instance.IsPresentationState(FetchResult.SopClassUid))
+        //        {
+        //            imageDicomObject =
+        //                DicomSerializer.Deserialize(FetchResult.CompositePath, true, true, true);
+        //        }
+        //        else
+        //        {
+        //            LoadComposite(isFullHeaderLoad);
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Initializes a new instance of PixelDataImplementation with given dcm file path
         /// </summary>
         /// <param name="fetchResult">the fetch result</param>
         /// <param name="isFullHeaderLoad"></param>
-        public PixelDataImplCopy(FetchResult fetchResult, bool isFullHeaderLoad)
+        public PixelDataImplCopy(DicomObject dcm)
         {
-            FetchResult = fetchResult;
-            pixelDataType = fetchResult.PixelDataType;
-            imageDicomObject = FetchResult.DicomObjectHeader;
+            imageDicomObject = dcm;
 
             if (pixelDataType == PixelDataType.None)
             {
-                LogHelper.LogInfo(
-                    "Received non pixel data type" +
-                    fetchResult.CompositePath.Anonymize());
+                //LogHelper.LogInfo(
+                //    "Received non pixel data type" +
+                //    fetchResult.CompositePath.Anonymize());
                 return;
             }
             if (imageDicomObject != null)
             {
-                isFastRepositoryEnabled = FastInMemoryUtility.IsFastRepositoryEnabled();
-                if (isFastRepositoryEnabled)
-                {
-                    sopInstanceUid = imageDicomObject.GetString(DicomDictionary.DicomSopInstanceUid);
-                    FastInMemoryPixelDataHandler = new FastInMemoryPixelDataHandler();
-                    return;
-                }
+                //isFastRepositoryEnabled = FastInMemoryUtility.IsFastRepositoryEnabled();
+                //if (isFastRepositoryEnabled)
+                //{
+                //    sopInstanceUid = imageDicomObject.GetString(DicomDictionary.DicomSopInstanceUid);
+                //    FastInMemoryPixelDataHandler = new FastInMemoryPixelDataHandler();
+                //    return;
+                //}
                 pixelDataReference =
                     imageDicomObject.GetBulkDataReference(
                         StorageDevicesUtilities.GetPixelDataTag(
                             imageDicomObject.GetTagVR(DicomDictionary.DicomPixelData)));
             }
-            else
-            {
-                if (ConfigurationProvider.Instance.IsPresentationState(FetchResult.SopClassUid))
-                {
-                    imageDicomObject =
-                        DicomSerializer.Deserialize(FetchResult.CompositePath, true, true, true);
-                }
-                else
-                {
-                    LoadComposite(isFullHeaderLoad);
-                }
-            }
+            //else
+            //{
+            //    if (ConfigurationProvider.Instance.IsPresentationState(FetchResult.SopClassUid))
+            //    {
+            //        imageDicomObject =
+            //            DicomSerializer.Deserialize(FetchResult.CompositePath, true, true, true);
+            //    }
+            //    else
+            //    {
+            //        LoadComposite(isFullHeaderLoad);
+            //    }
+            //}
         }
 
-        /// <summary>
-        /// Initializes a new instance of PixelDataImplementation with given dcm file path
-        /// </summary>
-        public PixelDataImplCopy(
-            DicomObject imageHeader,
-            BulkDataReference bulkDataReference
-        )
-        {
-            pixelDataType = PixelDataType.FileOffsetLength;
-            imageDicomObject = imageHeader;
-            pixelDataReference = bulkDataReference;
-        }
+
+        ///// <summary>
+        ///// Initializes a new instance of PixelDataImplementation with given dcm file path
+        ///// </summary>
+        //public PixelDataImplCopy(
+        //    DicomObject imageHeader,
+        //    BulkDataReference bulkDataReference
+        //)
+        //{
+        //    pixelDataType = PixelDataType.FileOffsetLength;
+        //    imageDicomObject = imageHeader;
+        //    pixelDataReference = bulkDataReference;
+        //}
 
         #endregion
 
@@ -271,14 +316,14 @@ namespace PixelDataImpl
                     StorageDevicesUtilities.GetPixelDataTag(imageDicomObject.GetTagVR(DicomDictionary.DicomPixelData)));
             }
 
-            if (FetchResult.PixelDataType != PixelDataType.Wado &&
-                FetchResult.PixelDataType != PixelDataType.Ahli &&
-                (pixelDataReference == null || imageDicomObject == null))
-            {
-                LoadComposite();
-            }
-            else
-            {
+            //if (FetchResult.PixelDataType != PixelDataType.Wado &&
+            //    FetchResult.PixelDataType != PixelDataType.Ahli &&
+            //    (pixelDataReference == null || imageDicomObject == null))
+            //{
+            //    LoadComposite();
+            //}
+            //else
+            //{
                 var pixelInformation = GetFileInformation();
 
                 if (pixelInformation != null)
@@ -297,7 +342,7 @@ namespace PixelDataImpl
                     }
                 }
                 MemoryMappedUnit = MemoryManagerOpenFileWithPreLoad(pixelInformation);
-            }
+            //}
         }
         //TICS +6@201 cyclomatic complexity
 
@@ -308,33 +353,33 @@ namespace PixelDataImpl
         private PixelDataInformation GetFileInformation()
         {
             PixelDataInformation fileInformation;
-            if (pixelDataReference == null & FetchResult.PixelDataType == PixelDataType.Wado)
-            {
-                var httpHeaderAttributes = GetHttpHeaderAttributes();
-                return new WadoPixelDataInformation(FetchResult.CompositePath, httpHeaderAttributes);
-            }
-            if (pixelDataReference == null & FetchResult.PixelDataType == PixelDataType.Ahli)
-            {
-                return CreateAhliPixelDataInformation();
-            }
+            //if (pixelDataReference == null & FetchResult.PixelDataType == PixelDataType.Wado)
+            //{
+            //    var httpHeaderAttributes = GetHttpHeaderAttributes();
+            //    return new WadoPixelDataInformation(FetchResult.CompositePath, httpHeaderAttributes);
+            //}
+            //if (pixelDataReference == null & FetchResult.PixelDataType == PixelDataType.Ahli)
+            //{
+            //    return CreateAhliPixelDataInformation();
+            //}
             if (pixelDataReference == null)
             {
                 return null;
             }
-            if (IsValidUrl(pixelDataReference.FileName))
-            {
-                var httpHeaderAttributes = GetHttpHeaderAttributes();
-                fileInformation =
-                    new WadoPixelDataInformation(pixelDataReference.FileName, httpHeaderAttributes);
-                if (FetchResult.StorageKey.Identifier.FrameNumber != 0)
-                {
-                    fileInformation.FrameNumber =
-                        Convert.ToInt32(FetchResult.StorageKey.Identifier.FrameNumber);
-                }
+            //if (IsValidUrl(pixelDataReference.FileName))
+            //{
+            //    var httpHeaderAttributes = GetHttpHeaderAttributes();
+            //    fileInformation =
+            //        new WadoPixelDataInformation(pixelDataReference.FileName, httpHeaderAttributes);
+            //    if (FetchResult.StorageKey.Identifier.FrameNumber != 0)
+            //    {
+            //        fileInformation.FrameNumber =
+            //            Convert.ToInt32(FetchResult.StorageKey.Identifier.FrameNumber);
+            //    }
 
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 // Call memory manager to open the file. This may throw an exception,
                 // which will be passed on to the caller.
                 fileInformation =
@@ -342,42 +387,42 @@ namespace PixelDataImpl
                         pixelDataReference.FileName,
                         pixelDataReference.Length,
                         pixelDataReference.Offset);
-            }
+            //}
 
             return fileInformation;
         }
 
-        private PixelDataInformation CreateAhliPixelDataInformation()
-        {
-            var httpHeaderAttributes = GetHttpHeaderAttributes();
-            var dataStoreId = FetchResult.DicomObjectHeader.GetString(PhilipsDictionary.PiimCurieDataStoreId);
-            var imageSetId = FetchResult.DicomObjectHeader.GetString(PhilipsDictionary.PiimCurieImageSetId);
-            var seriesInstanceUid = FetchResult.DicomObjectHeader.GetString(DicomDictionary.DicomSeriesInstanceUid);
-            var sopUid = FetchResult.DicomObjectHeader.GetString(DicomDictionary.DicomSopInstanceUid);
-            int frameIndex = checked((int)FetchResult.StorageKey.Identifier.FrameNumber);
-            var frameId = FetchResult.DicomObjectHeader.GetStringArray(PhilipsDictionary.PiimCurieFrameIds)
-                .ElementAt(frameIndex);
-            return new AhliPixelDataInformation(
-                FetchResult.CompositePath,
-                httpHeaderAttributes,
-                dataStoreId,
-                imageSetId,
-                seriesInstanceUid,
-                sopUid,
-                frameId
-                );
-        }
+        //private PixelDataInformation CreateAhliPixelDataInformation()
+        //{
+        //    var httpHeaderAttributes = GetHttpHeaderAttributes();
+        //    var dataStoreId = FetchResult.DicomObjectHeader.GetString(PhilipsDictionary.PiimCurieDataStoreId);
+        //    var imageSetId = FetchResult.DicomObjectHeader.GetString(PhilipsDictionary.PiimCurieImageSetId);
+        //    var seriesInstanceUid = FetchResult.DicomObjectHeader.GetString(DicomDictionary.DicomSeriesInstanceUid);
+        //    var sopUid = FetchResult.DicomObjectHeader.GetString(DicomDictionary.DicomSopInstanceUid);
+        //    int frameIndex = checked((int)FetchResult.StorageKey.Identifier.FrameNumber);
+        //    var frameId = FetchResult.DicomObjectHeader.GetStringArray(PhilipsDictionary.PiimCurieFrameIds)
+        //        .ElementAt(frameIndex);
+        //    return new AhliPixelDataInformation(
+        //        FetchResult.CompositePath,
+        //        httpHeaderAttributes,
+        //        dataStoreId,
+        //        imageSetId,
+        //        seriesInstanceUid,
+        //        sopUid,
+        //        frameId
+        //        );
+        //}
 
-        private Dictionary<string, string> GetHttpHeaderAttributes()
-        {
-            var dicomWebDeviceId = FetchResult.StorageKey.SourceDevice;
-            var device = (DicomWebDevice)DicomWebDeviceManager.Instance.GetDevice(dicomWebDeviceId);
-            if (device == null)
-            {
-                return new Dictionary<string, string>();
-            }
-            return device.GetHttpHeaderAttributes();
-        }
+        //private Dictionary<string, string> GetHttpHeaderAttributes()
+        //{
+        //    var dicomWebDeviceId = FetchResult.StorageKey.SourceDevice;
+        //    var device = (DicomWebDevice)DicomWebDeviceManager.Instance.GetDevice(dicomWebDeviceId);
+        //    if (device == null)
+        //    {
+        //        return new Dictionary<string, string>();
+        //    }
+        //    return device.GetHttpHeaderAttributes();
+        //}
         /// <summary>
         /// Checks whether given string is a valid url or not.
         /// </summary>
@@ -396,59 +441,59 @@ namespace PixelDataImpl
             return false;
         }
 
-        private void LoadComposite(bool isLoadFullHeader = false)
-        {
-            if (
-                pixelDataType != PixelDataType.DicomFile ||
-                string.IsNullOrEmpty(FetchResult.CompositePath)
-            )
-            {
-                return;
-            }
+        //private void LoadComposite(bool isLoadFullHeader = false)
+        //{
+        //    if (
+        //        pixelDataType != PixelDataType.DicomFile ||
+        //        string.IsNullOrEmpty(FetchResult.CompositePath)
+        //    )
+        //    {
+        //        return;
+        //    }
 
-            // Call memory manager to open the file. This may throw an exception,
-            // which will be passed on to the caller.
-            FileInformation fileInformation =
-                new FileInformation(FetchResult.CompositePath, 0, 0)
-                {
-                    ReadAttributesFromFile = true
-                };
+        //    // Call memory manager to open the file. This may throw an exception,
+        //    // which will be passed on to the caller.
+        //    FileInformation fileInformation =
+        //        new FileInformation(FetchResult.CompositePath, 0, 0)
+        //        {
+        //            ReadAttributesFromFile = true
+        //        };
 
-            // If frameNumber is set to a valid frame number(uint other than 0), then set
-            // isMultiFrameImage to true.
-            if (FetchResult.StorageKey.Identifier.FrameNumber != 0)
-            {
-                fileInformation.IsMultiframeImage = true;
-                fileInformation.FrameNumber =
-                    Convert.ToInt32(FetchResult.StorageKey.Identifier.FrameNumber);
-            }
-            MemoryMappedUnit = MemoryManagerOpenFileWithPreLoad(fileInformation, isLoadFullHeader);
-        }
+        //    // If frameNumber is set to a valid frame number(uint other than 0), then set
+        //    // isMultiFrameImage to true.
+        //    if (FetchResult.StorageKey.Identifier.FrameNumber != 0)
+        //    {
+        //        fileInformation.IsMultiframeImage = true;
+        //        fileInformation.FrameNumber =
+        //            Convert.ToInt32(FetchResult.StorageKey.Identifier.FrameNumber);
+        //    }
+        //    MemoryMappedUnit = MemoryManagerOpenFileWithPreLoad(fileInformation, isLoadFullHeader);
+        //}
 
         private void LockPixel()
         {
-            if (isFastRepositoryEnabled)
-            {
-                if (pixels == IntPtr.Zero && fastInMemoryPixelInformation == null)
-                {
-                    fastInMemoryPixelInformation = MemoryManagerClient.RetrieveInMemoryPixelInformation(sopInstanceUid);
-                }
-                if (fastInMemoryPixelInformation != null)
-                {
-                    if (pixels == IntPtr.Zero)
-                    {
-                        TryLoadingPixelFromFastInMemory();
-                    }
-                    if (pixels != IntPtr.Zero)
-                    {
-                        bulkDataRefCount = Interlocked.Increment(ref bulkDataRefCount);
-                        LogHelper.DevelopmentDebugLog("Pixels loaded from Fast In-memory repository device.");
-                        return;
-                    }
-                    //If pixels could not be loaded from fastInMemory fall back and let it get loaded from MMU.
-                    InitializeMemoryMappedUnit();
-                }
-            }
+            //if (isFastRepositoryEnabled)
+            //{
+            //    if (pixels == IntPtr.Zero && fastInMemoryPixelInformation == null)
+            //    {
+            //        fastInMemoryPixelInformation = MemoryManagerClient.RetrieveInMemoryPixelInformation(sopInstanceUid);
+            //    }
+            //    if (fastInMemoryPixelInformation != null)
+            //    {
+            //        if (pixels == IntPtr.Zero)
+            //        {
+            //            TryLoadingPixelFromFastInMemory();
+            //        }
+            //        if (pixels != IntPtr.Zero)
+            //        {
+            //            bulkDataRefCount = Interlocked.Increment(ref bulkDataRefCount);
+            //            LogHelper.DevelopmentDebugLog("Pixels loaded from Fast In-memory repository device.");
+            //            return;
+            //        }
+            //        //If pixels could not be loaded from fastInMemory fall back and let it get loaded from MMU.
+            //        InitializeMemoryMappedUnit();
+            //    }
+            //}
             if (MemoryMappedUnit != null)
             {
                 pixels = MemoryMappedUnit.Lock(out bulkSize);
@@ -456,20 +501,20 @@ namespace PixelDataImpl
             }
         }
 
-        private void TryLoadingPixelFromFastInMemory()
-        {
-            try
-            {
-                pixels = FastInMemoryPixelDataHandler.LoadPixel(fastInMemoryPixelInformation);
-            }
-            catch (Exception ex)
-            {
-                //This can occur during a race condition between LoadPixel, Delete from fast repository and LockPixel.
-                LogHelper.LogWarning(
-                    "Unable to load data from fast in memory pixel. Hence, falling back to file system.", ex);
-                fastInMemoryPixelInformation = null;
-            }
-        }
+        //private void TryLoadingPixelFromFastInMemory()
+        //{
+        //    try
+        //    {
+        //        pixels = FastInMemoryPixelDataHandler.LoadPixel(fastInMemoryPixelInformation);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //This can occur during a race condition between LoadPixel, Delete from fast repository and LockPixel.
+        //        LogHelper.LogWarning(
+        //            "Unable to load data from fast in memory pixel. Hence, falling back to file system.", ex);
+        //        fastInMemoryPixelInformation = null;
+        //    }
+        //}
 
         private static IMemoryMappedUnit MemoryManagerOpenFileWithPreLoad(
             PixelDataInformation pixelInformation,

@@ -88,4 +88,8 @@
     <None Include="PmsMip.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)bin\Debug\PixelDataImpl.dll" "D:\Repo\cp\AII\Output\Bin\" /Y /I
+xcopy "$(ProjectDir)bin\Debug\PixelDataImpl.pdb" "D:\Repo\cp\AII\Output\Bin\" /Y /I</PostBuildEvent>
+  </PropertyGroup>
 </Project>
